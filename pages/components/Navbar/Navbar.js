@@ -68,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Navbar = ({ category, setCategory }) => {
+const Navbar = ({ setCategory }) => {
     const classes = useStyles();
 
     const [drawerOpen, setDrawerOpen] = useState(false);
@@ -121,7 +121,6 @@ const Navbar = ({ category, setCategory }) => {
             <DrawerMenu
                 drawerOpen={drawerOpen}
                 setDrawerOpen={setDrawerOpen}
-                category={category}
                 setCategory={setCategory}
             />
         </div>

@@ -12,7 +12,7 @@ export default function Home() {
     return (
         <QueryClientProvider client={queryClient}>
             <div>
-                <Navbar category={category} setCategory={setCategory} />
+                <Navbar setCategory={setCategory} />
                 <Main category={category} />
             </div>
             <ReactQueryDevtools />

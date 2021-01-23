@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
     Drawer,
@@ -34,7 +34,7 @@ const useStyles = makeStyles({
     },
 });
 
-const DrawerMenu = ({ drawerOpen, setDrawerOpen, category, setCategory }) => {
+const DrawerMenu = ({ drawerOpen, setDrawerOpen, setCategory }) => {
     const classes = useStyles();
 
     const handleCategory = (t) => {
