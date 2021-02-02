@@ -11,7 +11,7 @@ import {
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 
-import DrawerMenu from '../DrawerMenu/DrawerMenu';
+import DrawerMenu from './DrawerMenu';
 
 const useStyles = makeStyles((theme) => ({
     root: {

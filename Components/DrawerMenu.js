@@ -12,7 +12,32 @@ import {
 } from '@material-ui/core';
 import AnnouncementIcon from '@material-ui/icons/Announcement';
 
-import { drawerOptions } from './options';
+const drawerOptions = [
+    {
+        title: 'Top U.S. Headlines',
+    },
+    {
+        title: 'World',
+    },
+    {
+        title: 'Business',
+    },
+    {
+        title: 'Technology',
+    },
+    {
+        title: 'Entertainment',
+    },
+    {
+        title: 'Sports',
+    },
+    {
+        title: 'Science',
+    },
+    {
+        title: 'Health',
+    },
+];
 
 const useStyles = makeStyles({
     list: {

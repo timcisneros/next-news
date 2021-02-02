@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Container, Grid, CircularProgress } from '@material-ui/core';
-import { useQuery } from 'react-query';
+import { QueryClient, useQuery } from 'react-query';
 
-import { fetchArticles } from '../../api/newsapi';
-
-import Article from '../Article/Article';
+import Article from './Article';
+import { fetchArticles } from '../pages/api/newsapi';
+import { dehydrate } from 'react-query/hydration';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -21,6 +21,18 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
     },
 }));
+
+export async function getServerSideProps() {
+    const queryClient = new QueryClient();
+
+    await queryClient.prefetchQuery('articles', fetchArticles);
+
+    return {
+        props: {
+            dehydratedState: dehydrate(queryClient),
+        },
+    };
+}
 
 const Main = ({ category }) => {
     const classes = useStyles();
