@@ -49,7 +49,7 @@ const Main = ({ category }) => {
                     </div>
                 )}
                 {status === 'error' && <p>Unable To Load News Feed</p>}
-                {status === 'success' && (
+                {status === 'success' && data.articles.length && (
                     <>
                         {data.articles.map((article) => (
                             <React.Fragment key={article.title}>
