@@ -36,7 +36,10 @@ export async function getStaticProps() {
 
 const Main = ({ category }) => {
     const classes = useStyles();
-    const { data, status } = useQuery(['articles', category], fetchArticles);
+    const { data, error, status } = useQuery(
+        ['articles', category],
+        fetchArticles
+    );
 
     return (
         <Container>
@@ -48,7 +51,7 @@ const Main = ({ category }) => {
                         <h2>Getting News Feed...</h2>
                     </div>
                 )}
-                {status === 'error' && <p>Unable To Load News Feed</p>}
+                {status === 'error' && <p>{`${error}`}</p>}
                 {status === 'success' && data.articles.length && (
                     <>
                         {data.articles.map((article) => (
