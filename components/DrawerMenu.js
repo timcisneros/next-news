@@ -18,24 +18,35 @@ const drawerOptions = [
     },
     {
         title: 'World',
+        name: 'world',
+    },
+    {
+        title: 'Nation',
+        name: 'nation',
     },
     {
         title: 'Business',
+        name: 'business',
     },
     {
         title: 'Technology',
+        name: 'technology',
     },
     {
         title: 'Entertainment',
+        name: 'entertainment',
     },
     {
         title: 'Sports',
+        name: 'sports',
     },
     {
         title: 'Science',
+        name: 'science',
     },
     {
         title: 'Health',
+        name: 'health',
     },
 ];
 
@@ -63,7 +74,7 @@ const DrawerMenu = ({ drawerOpen, setDrawerOpen, setCategory }) => {
     const classes = useStyles();
 
     const handleCategory = (t) => {
-        setCategory(t.title);
+        setCategory(t);
         setDrawerOpen(!drawerOpen);
     };
 

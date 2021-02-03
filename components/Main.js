@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
     const queryClient = new QueryClient();
 
     await queryClient.prefetchQuery('articles', fetchArticles);
@@ -40,7 +40,7 @@ const Main = ({ category }) => {
 
     return (
         <Container>
-            <h1>{category}</h1>
+            <h1>{category.title}</h1>
             <Grid className={classes.root} container spacing={2}>
                 {status === 'loading' && (
                     <div className={classes.loadingProgress}>

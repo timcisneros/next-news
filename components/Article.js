@@ -55,7 +55,7 @@ const Article = ({ article }) => {
                         <CardActionArea href={article.url} target="_blank">
                             <CardMedia
                                 className={classes.Media}
-                                image={article.urlToImage}
+                                image={article.image}
                                 title={article.title}
                             />
                             <CardContent>

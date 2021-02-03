@@ -1,9 +1,10 @@
 export const fetchArticles = async (key) => {
-    const apiKey = process.env.NEXT_PUBLIC_NEWSID;
+    const apiKey = process.env.NEXT_PUBLIC_GNEWS_TOKEN;
 
     const c = key.queryKey[1];
-    const urlTop = `https://newsapi.org/v2/top-headlines?country=us&apiKey=${apiKey}`;
-    const urlSearch = `https://newsapi.org/v2/everything?q=${c}&apiKey=${apiKey}`;
+
+    const urlTop = `https://gnews.io/api/v4/top-headlines?&token=${apiKey}&lang=en`;
+    const urlSearch = `https://gnews.io/api/v4/top-headlines?&token=${apiKey}&lang=en&topic=${c.name}`;
 
     const url = c === 'Top U.S. Headlines' ? urlTop : urlSearch;
 
