@@ -10,9 +10,9 @@ export const fetchArticles = async (key) => {
 
     const res = await fetch(url);
     const data = await res.json();
-    await Promise.reject(
-        new Error('Too many requests made to API (Resets in 24 hours)')
-    );
+    // await Promise.reject(
+    //     new Error('Too many requests made to API (Resets in 24 hours)')
+    // );
 
     return data;
 };
