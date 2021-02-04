@@ -51,7 +51,7 @@ const Main = ({ category }) => {
                         <h2>Getting News Feed...</h2>
                     </div>
                 )}
-                {status === 'error' && <p>{`${error}`}</p>}
+                {status === 'error' && <p>Unable to get articles</p>}
                 {status === 'success' && data.articles.length && (
                     <>
                         {data.articles.map((article) => (
