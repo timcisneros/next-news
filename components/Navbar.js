@@ -109,7 +109,7 @@ const Navbar = ({ setCategory }) => {
                         />
                     </div> */}
                     <Button
-                        href="https://www.timcis.com"
+                        href="https://timcis.com"
                         target="_blank"
                         color="inherit"
                     >
