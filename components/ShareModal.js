@@ -1,35 +1,21 @@
 import React, { useState } from 'react';
-import { Button, Snackbar, IconButton } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import Modal from '@material-ui/core/Modal';
-import Backdrop from '@material-ui/core/Backdrop';
-import Fade from '@material-ui/core/Fade';
-import CloseIcon from '@material-ui/icons/Close';
-import copy from 'clipboard-copy';
-
-const useStyles = makeStyles((theme) => ({
-    modal: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    paper: {
-        width: 500,
-        backgroundColor: theme.palette.background.paper,
-        boxShadow: theme.shadows[5],
-        padding: theme.spacing(2, 4, 3),
-        borderRadius: 5,
-        outline: 'none',
-    },
-}));
+import { Button, Snackbar, IconButton, Modal, Box, Typography } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 
 const ShareModal = ({ article, handleClose, open }) => {
-    const classes = useStyles();
-
     const [openNotification, setOpenNotification] = useState(false);
 
-    const handleCopy = () => {
-        copy(article.url);
+    const handleCopy = async () => {
+        try {
+            await navigator.clipboard.writeText(article.url);
+        } catch {
+            const ta = document.createElement('textarea');
+            ta.value = article.url;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+        }
         setOpenNotification(true);
     };
 
@@ -39,22 +25,29 @@ const ShareModal = ({ article, handleClose, open }) => {
 
     return (
         <div>
-            <Modal
-                aria-labelledby="transition-modal-title"
-                aria-describedby="transition-modal-description"
-                className={classes.modal}
-                open={open}
-                onClose={() => handleClose()}
-                closeAfterTransition
-                BackdropComponent={Backdrop}
-            >
-                <Fade in={open}>
-                    <div className={classes.paper}>
-                        <h2 id="transition-modal-title">{`Share ${article.source.name} Article`}</h2>
-                        <p id="transition-modal-description">{article.url}</p>
-                        <Button onClick={() => handleCopy()}>Copy</Button>
-                    </div>
-                </Fade>
+            <Modal open={open} onClose={handleClose}>
+                <Box
+                    sx={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        width: 500,
+                        bgcolor: 'background.paper',
+                        boxShadow: 24,
+                        p: '16px 32px 24px',
+                        borderRadius: 1,
+                        outline: 'none',
+                    }}
+                >
+                    <Typography variant="h6" sx={{ mb: 2 }}>
+                        {`Share ${article.source?.name || 'Article'}`}
+                    </Typography>
+                    <Typography variant="body2" sx={{ mb: 2, wordBreak: 'break-all' }}>
+                        {article.url}
+                    </Typography>
+                    <Button variant="contained" onClick={handleCopy}>Copy</Button>
+                </Box>
             </Modal>
             <Snackbar
                 anchorOrigin={{
@@ -66,16 +59,14 @@ const ShareModal = ({ article, handleClose, open }) => {
                 onClose={handleCloseNotification}
                 message="Copied to clipboard"
                 action={
-                    <React.Fragment>
-                        <IconButton
-                            size="small"
-                            aria-label="close"
-                            color="inherit"
-                            onClick={handleCloseNotification}
-                        >
-                            <CloseIcon fontSize="small" />
-                        </IconButton>
-                    </React.Fragment>
+                    <IconButton
+                        size="small"
+                        aria-label="close"
+                        color="inherit"
+                        onClick={handleCloseNotification}
+                    >
+                        <CloseIcon fontSize="small" />
+                    </IconButton>
                 }
             />
         </div>

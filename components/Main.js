@@ -1,65 +1,62 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { Container, Grid, CircularProgress } from '@material-ui/core';
-import { QueryClient, useQuery } from 'react-query';
+import { Container, Grid, CircularProgress, Typography } from '@mui/material';
+import { useQuery } from '@tanstack/react-query';
 
 import Article from './Article';
-import { fetchArticles } from '../pages/api/newsapi';
-import { dehydrate } from 'react-query/hydration';
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'center',
-        overflow: 'hidden',
-    },
-    loadingProgress: {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-}));
-
-export async function getStaticProps() {
-    const queryClient = new QueryClient();
-
-    await queryClient.prefetchQuery('articles', fetchArticles);
-
-    return {
-        props: {
-            dehydratedState: dehydrate(queryClient),
-        },
-    };
-}
+import { fetchArticles } from '../lib/newsapi';
 
 const Main = ({ category }) => {
-    const classes = useStyles();
-    const { data, error, status } = useQuery(
-        ['articles', category],
-        fetchArticles
-    );
+    const { data, error, status } = useQuery({
+        queryKey: ['articles', category],
+        queryFn: fetchArticles,
+        staleTime: 5 * 60 * 1000,
+        refetchOnWindowFocus: false,
+    });
 
     return (
-        <Container>
-            <h1>{category.title}</h1>
-            <Grid className={classes.root} container spacing={2}>
-                {status === 'loading' && (
-                    <div className={classes.loadingProgress}>
-                        <CircularProgress />
-                        <h2>Getting News Feed...</h2>
-                    </div>
+        <Container maxWidth="xl">
+            <Typography variant="h4" sx={{ my: 3, textAlign: 'center' }}>
+                {category.title}
+            </Typography>
+            <Grid container spacing={2}>
+                {status === 'pending' && (
+                    <Grid size={{ xs: 12 }}>
+                        <div
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                padding: '48px 0',
+                            }}
+                        >
+                            <CircularProgress />
+                            <Typography variant="h5" sx={{ mt: 2 }}>
+                                Getting News Feed...
+                            </Typography>
+                        </div>
+                    </Grid>
                 )}
-                {status === 'error' && <p>Unable to get articles</p>}
-                {status === 'success' && data.articles.length && (
+                {status === 'error' && (
+                    <Grid size={{ xs: 12 }}>
+                        <Typography variant="h6" color="error" sx={{ textAlign: 'center', mt: 4 }}>
+                            {error?.message || 'Unable to get articles'}
+                        </Typography>
+                    </Grid>
+                )}
+                {status === 'success' && data.articles?.length > 0 && (
                     <>
                         {data.articles.map((article) => (
-                            <React.Fragment key={article.title}>
-                                <Article article={article} />
-                            </React.Fragment>
+                            <Article key={article.id || article.title} article={article} />
                         ))}
                     </>
+                )}
+                {status === 'success' && (!data.articles || data.articles.length === 0) && (
+                    <Grid size={{ xs: 12 }}>
+                        <Typography variant="h6" sx={{ textAlign: 'center', mt: 4, color: 'text.secondary' }}>
+                            No articles found for this category.
+                        </Typography>
+                    </Grid>
                 )}
             </Grid>
         </Container>
